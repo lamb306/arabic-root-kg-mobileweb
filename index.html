@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="description" content="阿拉伯语词根知识图谱 - 手机网页版">
+  <title>阿拉伯语词根知识图谱</title>
+  <style>
+    * { box-sizing: border-box; }
+    body, html { margin: 0; padding: 0; height: 100%; background: #1a1a2e; color: #eee; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    #app { display: flex; flex-direction: column; height: 100vh; }
+    header { flex: 0 0 auto; padding: 12px 16px; background: #16213e; border-bottom: 1px solid #0f3460; }
+    header h1 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+    #search-wrap { padding: 8px 16px; background: #1a1a2e; }
+    #search { width: 100%; padding: 10px 14px; font-size: 16px; border: 1px solid #0f3460; border-radius: 8px; background: #16213e; color: #eee; }
+    #search::placeholder { color: #888; }
+    #graph-wrap { flex: 1; min-height: 0; position: relative; }
+    #mynetwork { width: 100%; height: 100%; }
+    #status { padding: 12px 16px; font-size: 14px; color: #888; text-align: center; }
+    #status.error { color: #e57373; }
+    #status.loading { color: #81c784; }
+    .hidden { display: none !important; }
+  </style>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>🧠 阿拉伯语词根知识图谱</h1>
+    </header>
+    <div id="search-wrap">
+      <input type="text" id="search" placeholder="搜索词根/单词（阿文、中文、代号）" autocomplete="off">
+    </div>
+    <div id="graph-wrap">
+      <div id="mynetwork"></div>
+    </div>
+    <div id="status">正在加载数据…</div>
+  </div>
+
+  <script>
+(function() {
+  var network = null;
+  var allNodes = [];
+  var allEdges = [];
+  var wordsByRoot = {};
+
+  // 内置示例数据（无 data.json 时显示）
+  var DEFAULT_DATA = {
+    "roots": [
+      { "id": "k-t-b", "arabic": "ك ت ب", "chinese": "写；书写", "pronunciation": "k-t-b", "detail": "与书写、记录、书籍相关的核心词根。" }
+    ],
+    "words": [
+      { "id": "kitab", "arabic": "كتاب", "chinese": "书", "root_id": "k-t-b", "pos": "名词", "detail": "书本", "example": "" },
+      { "id": "maktaba", "arabic": "مكتبة", "chinese": "图书馆", "root_id": "k-t-b", "pos": "名词", "detail": "", "example": "" }
+    ]
+  };
+
+  function buildWordsByRoot(roots, words) {
+    var byRoot = {};
+    roots.forEach(function(r) { byRoot[r.id] = []; });
+    words.forEach(function(w) {
+      if (byRoot[w.root_id]) byRoot[w.root_id].push(w);
+    });
+    return byRoot;
+  }
+
+  function buildGraph(data) {
+    var roots = data.roots || [];
+    var words = data.words || [];
+    wordsByRoot = buildWordsByRoot(roots, words);
+    var maxCount = 0;
+    Object.keys(wordsByRoot).forEach(function(rid) { maxCount = Math.max(maxCount, wordsByRoot[rid].length); });
+    if (maxCount === 0) maxCount = 1;
+
+    var rootPos = {}, wordPos = {};
+    var spacing = 400, radius = 150;
+    roots.forEach(function(r, idx) {
+      var rid = r.id;
+      if (!rid) return;
+      rootPos[rid] = { x: idx * spacing, y: 0 };
+      var children = wordsByRoot[rid] || [];
+      children.forEach(function(w, j) {
+        var angle = 2 * Math.PI * j / children.length;
+        wordPos[w.id] = {
+          x: rootPos[rid].x + radius * Math.cos(angle),
+          y: rootPos[rid].y + radius * Math.sin(angle)
+        };
+      });
+    });
+    var unY = 350, unX = 0;
+    words.forEach(function(w) {
+      if (!wordPos[w.id]) {
+        wordPos[w.id] = { x: unX * 250, y: unY };
+        unX++;
+      }
+    });
+
+    var nodes = [];
+    roots.forEach(function(r) {
+      var rid = r.id;
+      if (!rid) return;
+      var count = (wordsByRoot[rid] || []).length;
+      var size = 15 + Math.floor(25 * count / maxCount);
+      var label = r.arabic || rid;
+      var title = "<b>词根: " + (r.arabic || "") + "</b><br>代号: " + rid + "<br>中文: " + (r.chinese || "") + "<br>说明: " + (r.detail || "") + "<br>派生词数: " + count;
+      var n = { id: "root|" + rid, label: label, title: title, size: Math.max(size, 12), color: "#F44336" };
+      if (rootPos[rid]) { n.x = rootPos[rid].x; n.y = rootPos[rid].y; }
+      nodes.push(n);
+    });
+    words.forEach(function(w) {
+      var wid = w.id;
+      if (!wid) return;
+      var arabic = w.arabic || "", chinese = w.chinese || "", pos = w.pos || "";
+      var label = arabic + (chinese ? "\n" + chinese : "") + (pos ? "\n" + pos : "");
+      var title = "<b>单词: " + arabic + "</b><br>编码: " + wid + "<br>中文: " + chinese + "<br>词性: " + pos + "<br>词根: " + (w.root_id || "") + "<br>说明: " + (w.detail || "") + "<br>例句: " + (w.example || "");
+      var n = { id: "word|" + wid, label: label || wid, title: title, size: 14, color: "#4CAF50" };
+      if (wordPos[wid]) { n.x = wordPos[wid].x; n.y = wordPos[wid].y; }
+      nodes.push(n);
+    });
+
+    var edges = [];
+    words.forEach(function(w) {
+      if (wordsByRoot[w.root_id]) edges.push({ from: "word|" + w.id, to: "root|" + w.root_id });
+    });
+
+    allNodes = nodes;
+    allEdges = edges;
+    return { nodes: nodes, edges: edges };
+  }
+
+  function applySearch(q) {
+    if (!network) return;
+    q = (q || "").trim().toLowerCase();
+    var ids = [];
+    if (!q) {
+      ids = allNodes.map(function(n) { return n.id; });
+    } else {
+      allNodes.forEach(function(n) {
+        var label = (n.label || "").toLowerCase();
+        var title = (n.title || "").toLowerCase();
+        if (label.indexOf(q) !== -1 || title.indexOf(q) !== -1) ids.push(n.id);
+      });
+    }
+    if (ids.length === 0) {
+      network.body.data.nodes.forEach(function(n) {
+        network.body.data.nodes.update({ id: n.id, color: "#666", size: 10 });
+      });
+      return;
+    }
+    allNodes.forEach(function(n) {
+      var highlight = ids.indexOf(n.id) !== -1;
+      network.body.data.nodes.update({
+        id: n.id,
+        color: highlight ? (n.color || "#4CAF50") : "#444",
+        size: highlight ? (n.size + 4) : Math.max(8, n.size - 4)
+      });
+    });
+    network.fit({ nodes: ids, animation: { duration: 400 } });
+  }
+
+  function initNetwork(data) {
+    var graph = buildGraph(data);
+    var container = document.getElementById("mynetwork");
+    if (!container) return;
+    var nodes = new vis.DataSet(graph.nodes);
+    var edges = new vis.DataSet(graph.edges);
+    network = new vis.Network(container, { nodes: nodes, edges: edges }, {
+      nodes: { font: { size: 14, color: "white" } },
+      edges: { color: { inherit: "from" }, smooth: { type: "continuous" } },
+      physics: {
+        enabled: true,
+        forceAtlas2Based: {
+          gravitationalConstant: -80,
+          centralGravity: 0.01,
+          springLength: 220,
+          springConstant: 0.05
+        },
+        minVelocity: 0.5,
+        solver: "forceAtlas2Based"
+      },
+      interaction: { hover: true }
+    });
+    network.fit({ animation: { duration: 500 } });
+    document.getElementById("search").addEventListener("input", function() { applySearch(this.value); });
+  }
+
+  function setStatus(msg, isError) {
+    var el = document.getElementById("status");
+    if (!el) return;
+    el.textContent = msg;
+    el.className = isError ? "error" : "loading";
+  }
+
+  function loadData() {
+    setStatus("正在加载数据…", false);
+    fetch("data.json")
+      .then(function(r) {
+        if (!r.ok) throw new Error("未找到 data.json");
+        return r.json();
+      })
+      .then(function(data) {
+        if (!data.roots && !data.words) throw new Error("数据为空");
+        setStatus("已加载 " + (data.roots ? data.roots.length : 0) + " 个词根、" + (data.words ? data.words.length : 0) + " 个单词。", false);
+        document.getElementById("status").classList.add("hidden");
+        initNetwork(data);
+      })
+      .catch(function() {
+        setStatus("使用示例数据展示。若需展示自己的图谱，请将 my_knowledge_base.json 复制为本目录下的 data.json 后刷新。", false);
+        initNetwork(DEFAULT_DATA);
+      });
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", loadData);
+  else loadData();
+})();
+  </script>
+</body>
+</html>
