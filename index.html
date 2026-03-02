@@ -11,14 +11,64 @@
     #app { display: flex; flex-direction: column; height: 100vh; }
     header { flex: 0 0 auto; padding: 12px 16px; background: #16213e; border-bottom: 1px solid #0f3460; }
     header h1 { margin: 0; font-size: 1.25rem; font-weight: 600; }
+
+    #main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+    .view { flex: 1 1 auto; min-height: 0; display: none; }
+    .view.active { display: flex; flex-direction: column; }
+
     #search-wrap { padding: 8px 16px; background: #1a1a2e; }
     #search { width: 100%; padding: 10px 14px; font-size: 16px; border: 1px solid #0f3460; border-radius: 8px; background: #16213e; color: #eee; }
     #search::placeholder { color: #888; }
     #graph-wrap { flex: 1; min-height: 0; position: relative; }
     #mynetwork { width: 100%; height: 100%; }
-    #status { padding: 12px 16px; font-size: 14px; color: #888; text-align: center; }
+
+    #detail-panel { flex: 0 0 auto; padding: 10px 16px 12px; background: #0b1220; border-top: 1px solid #0f3460; font-size: 14px; }
+    #detail-title { font-size: 1.4rem; margin-bottom: 4px; color: #facc15; direction: rtl; text-align: right; }
+    #detail-sub { color: #cbd5f5; margin-bottom: 6px; }
+    #detail-extra { color: #9ca3af; line-height: 1.5; margin-top: 4px; }
+    #pronounce-btn { margin-top: 6px; padding: 6px 12px; border-radius: 999px; border: none; background: #22c55e; color: #022c22; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+    #pronounce-btn:active { transform: scale(0.97); }
+    #pronounce-btn span.icon { font-size: 16px; }
+    #back-full-graph-btn { margin-left: 8px; padding: 6px 10px; border-radius: 999px; border: 1px solid #4b5563; background: #020617; color: #e5e7eb; font-size: 13px; }
+
+    #status { padding: 8px 16px; font-size: 13px; color: #888; text-align: center; background: #020617; border-top: 1px solid #0f3460; }
     #status.error { color: #e57373; }
     #status.loading { color: #81c784; }
+
+    #tab-bar { flex: 0 0 auto; display: flex; border-top: 1px solid #0f3460; background: #020617; }
+    #tab-bar .tab { flex: 1; padding: 8px 0; border: none; background: transparent; color: #9ca3af; font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+    #tab-bar .tab.active { color: #facc15; border-top: 2px solid #facc15; }
+
+    .view-header { padding: 8px 16px 4px; border-bottom: 1px solid #0f3460; background: #111827; }
+    .view-header h2 { margin: 0; font-size: 15px; }
+
+    .view-toolbar { padding: 8px 16px; background: #1a1a2e; border-bottom: 1px solid #0f3460; }
+    .view-toolbar input,
+    #word-search,
+    #manage-search { width: 100%; padding: 8px 12px; font-size: 14px; border-radius: 8px; border: 1px solid #0f3460; background: #020617; color: #e5e7eb; }
+
+    #word-list { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 8px 12px 12px; }
+    .word-item { padding: 8px 10px; margin-bottom: 6px; border-radius: 10px; background: #020617; border: 1px solid #1f2937; display: flex; align-items: center; justify-content: space-between; }
+    .word-main { flex: 1 1 auto; min-width: 0; }
+    .word-ar { font-size: 1.2rem; text-align: right; direction: rtl; color: #facc15; }
+    .word-zh { font-size: 13px; color: #e5e7eb; }
+    .word-meta { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+    .word-actions { flex: 0 0 auto; margin-left: 8px; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+    .btn-icon { padding: 4px 8px; border-radius: 999px; border: none; background: #1d4ed8; color: #e5e7eb; font-size: 12px; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+    .btn-icon.secondary { background: #111827; border: 1px solid #374151; }
+
+    .data-section { padding: 10px 16px 4px; border-bottom: 1px solid #0f3460; }
+    .data-section h3 { margin: 0 0 6px; font-size: 14px; }
+    #import-text { width: 100%; resize: vertical; padding: 8px; border-radius: 8px; border: 1px solid #0f3460; background: #020617; color: #e5e7eb; font-size: 13px; }
+    .button-row { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+    button { font-family: inherit; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .secondary { background: #111827; color: #e5e7eb; border: 1px solid #374151; }
+    .danger { background: #b91c1c; color: #fee2e2; border: none; }
+    .preview-box { margin-top: 6px; padding: 8px; border-radius: 8px; background: #020617; border: 1px solid #1f2937; font-size: 12px; max-height: 160px; overflow-y: auto; white-space: pre-wrap; }
+    .delete-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+    .delete-row select { flex: 1 1 auto; padding: 6px 8px; border-radius: 8px; border: 1px solid #0f3460; background: #020617; color: #e5e7eb; font-size: 13px; }
+
     .hidden { display: none !important; }
   </style>
   <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
@@ -28,21 +78,113 @@
     <header>
       <h1>🧠 阿拉伯语词根知识图谱</h1>
     </header>
-    <div id="search-wrap">
-      <input type="text" id="search" placeholder="搜索词根/单词（阿文、中文、代号）" autocomplete="off">
-    </div>
-    <div id="graph-wrap">
-      <div id="mynetwork"></div>
-    </div>
-    <div id="status">正在加载数据…</div>
+
+    <main id="main">
+      <!-- 图谱视图 -->
+      <section id="view-graph" class="view active">
+        <div id="search-wrap">
+          <input type="text" id="search" placeholder="搜索词根/单词（阿文、中文、代号）" autocomplete="off">
+        </div>
+        <div id="graph-wrap">
+          <div id="mynetwork"></div>
+        </div>
+        <div id="detail-panel" class="hidden">
+          <div id="detail-title"></div>
+          <div id="detail-sub"></div>
+          <button id="pronounce-btn">
+            <span class="icon">🔊</span>
+            <span>发音</span>
+          </button>
+          <button id="back-full-graph-btn" class="secondary hidden">返回全图</button>
+          <div id="detail-extra"></div>
+        </div>
+      </section>
+
+      <!-- 单词列表视图 -->
+      <section id="view-words" class="view">
+        <div class="view-header">
+          <h2>单词列表</h2>
+        </div>
+        <div class="view-toolbar">
+          <input type="text" id="word-search" placeholder="搜索单词（阿文 / 中文 / 代号）" autocomplete="off">
+        </div>
+        <div id="word-list"></div>
+      </section>
+
+      <!-- 数据管理视图 -->
+      <section id="view-data" class="view">
+        <div class="view-header">
+          <h2>数据管理</h2>
+        </div>
+        <div class="data-section">
+          <h3>导入 root|... / word|... 行</h3>
+          <textarea id="import-text" rows="6" placeholder="在此粘贴由 LLM 或其它工具生成的行数据，每行以 root| 或 word| 开头。"></textarea>
+          <div class="button-row">
+            <button id="parse-import-btn">解析并预览</button>
+            <button id="merge-import-btn" class="secondary" disabled>合并到当前图谱</button>
+          </div>
+          <div id="import-preview" class="preview-box"></div>
+        </div>
+
+        <div class="data-section">
+          <h3>删除节点</h3>
+          <input type="text" id="manage-search" placeholder="按阿文 / 中文 / 代号搜索要删除的节点">
+          <div class="delete-row">
+            <select id="delete-root-select">
+              <option value="">选择要删除的词根</option>
+            </select>
+            <button id="delete-root-btn" class="danger">删除词根及其单词</button>
+          </div>
+          <div class="delete-row">
+            <select id="delete-word-select">
+              <option value="">选择要删除的单词</option>
+            </select>
+            <button id="delete-word-btn" class="danger">删除单词</button>
+          </div>
+        </div>
+
+        <div class="data-section">
+          <h3>持久化</h3>
+          <div class="button-row">
+            <button id="export-json-btn">导出当前数据为 JSON</button>
+            <button id="clear-storage-btn" class="secondary">清除本地个人库</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="status">正在加载数据…</div>
+    </main>
+
+    <nav id="tab-bar">
+      <button class="tab active" data-view="view-graph">图谱</button>
+      <button class="tab" data-view="view-words">单词</button>
+      <button class="tab" data-view="view-data">数据</button>
+    </nav>
   </div>
+
+  <audio id="word-audio" preload="none"></audio>
 
   <script>
 (function() {
+  // === 全局状态 ===
+  var STORAGE_KEY = "arabic_kg_user_kb_v1";
+  var TTS_BASE_URL = window.TTS_BASE_URL || "http://127.0.0.1:5000";
+
   var network = null;
   var allNodes = [];
   var allEdges = [];
   var wordsByRoot = {};
+  var wordMap = {};
+  var rootMap = {};
+  var allRoots = [];
+  var allWords = [];
+  var currentWordArabic = "";
+  var currentRootId = "";
+  var isSubgraphView = false;
+  var fullGraphData = null;
+
+  var audioEl = null;
+  var audioCache = Object.create(null);
 
   // 内置示例数据（无 data.json 时显示）
   var DEFAULT_DATA = {
@@ -67,6 +209,11 @@
   function buildGraph(data) {
     var roots = data.roots || [];
     var words = data.words || [];
+    allRoots = roots.slice();
+    allWords = words.slice();
+    wordMap = {};
+    rootMap = {};
+    roots.forEach(function(r) { if (r && r.id) rootMap[r.id] = r; });
     wordsByRoot = buildWordsByRoot(roots, words);
     var maxCount = 0;
     Object.keys(wordsByRoot).forEach(function(rid) { maxCount = Math.max(maxCount, wordsByRoot[rid].length); });
@@ -89,6 +236,9 @@
     });
     var unY = 350, unX = 0;
     words.forEach(function(w) {
+      if (w && w.id) {
+        wordMap[w.id] = w;
+      }
       if (!wordPos[w.id]) {
         wordPos[w.id] = { x: unX * 250, y: unY };
         unX++;
@@ -158,6 +308,113 @@
     network.fit({ nodes: ids, animation: { duration: 400 } });
   }
 
+  function showWordDetail(word) {
+    var panel = document.getElementById("detail-panel");
+    var titleEl = document.getElementById("detail-title");
+    var subEl = document.getElementById("detail-sub");
+    var extraEl = document.getElementById("detail-extra");
+    if (!panel || !titleEl || !subEl || !extraEl) return;
+
+    currentWordArabic = word.arabic || "";
+    titleEl.textContent = currentWordArabic || (word.id || "");
+    var chinese = word.chinese || "";
+    var pos = word.pos || "";
+    var rootId = word.root_id || "";
+    subEl.textContent = [chinese, pos, rootId ? ("词根: " + rootId) : ""].filter(Boolean).join(" · ");
+    var detailParts = [];
+    if (word.detail) detailParts.push("说明：" + word.detail);
+    if (word.example) detailParts.push("例句：" + word.example);
+    extraEl.textContent = detailParts.join("  ");
+    panel.classList.remove("hidden");
+  }
+
+  function clearDetail() {
+    var panel = document.getElementById("detail-panel");
+    if (!panel) return;
+    panel.classList.add("hidden");
+    currentWordArabic = "";
+    currentRootId = "";
+  }
+
+  // 词根详情：展示词根信息 + 派生词列表
+  function showRootDetail(rootId) {
+    var root = rootMap[rootId];
+    if (!root) return;
+    var panel = document.getElementById("detail-panel");
+    var titleEl = document.getElementById("detail-title");
+    var subEl = document.getElementById("detail-sub");
+    var extraEl = document.getElementById("detail-extra");
+    if (!panel || !titleEl || !subEl || !extraEl) return;
+
+    currentRootId = rootId;
+    currentWordArabic = "";
+
+    titleEl.textContent = root.arabic || root.id;
+    subEl.textContent = ["词根代号: " + root.id, root.chinese || ""].filter(Boolean).join(" · ");
+
+    var derived = wordsByRoot[rootId] || [];
+    var parts = [];
+    if (root.detail) parts.push("说明：" + root.detail);
+    if (derived.length) {
+      parts.push("派生词：");
+      derived.forEach(function(w) {
+        parts.push(" - " + (w.arabic || "") + " - " + (w.chinese || ""));
+      });
+    }
+    extraEl.textContent = parts.join("\n");
+    panel.classList.remove("hidden");
+  }
+
+  // 云 TTS + 缓存 + 回退到 Web Speech API
+  function playWordAudio(text) {
+    if (!text) return;
+
+    if (!audioEl) {
+      audioEl = document.getElementById("word-audio");
+    }
+
+    // 优先使用云 TTS
+    function useCloudTTS() {
+      if (!TTS_BASE_URL) return Promise.reject(new Error("TTS_BASE_URL 未配置"));
+
+      if (audioCache[text]) {
+        audioEl.src = audioCache[text];
+        audioEl.play().catch(function() {});
+        return Promise.resolve();
+      }
+
+      var url = TTS_BASE_URL.replace(/\/+$/, "") + "/tts?text=" + encodeURIComponent(text);
+      return fetch(url).then(function(resp) {
+        if (!resp.ok) throw new Error("TTS 服务错误: " + resp.status);
+        return resp.blob();
+      }).then(function(blob) {
+        var objectUrl = URL.createObjectURL(blob);
+        audioCache[text] = objectUrl;
+        audioEl.src = objectUrl;
+        return audioEl.play();
+      });
+    }
+
+    function useWebSpeechFallback() {
+      var synth = window.speechSynthesis;
+      if (!synth || !window.SpeechSynthesisUtterance) {
+        alert("当前浏览器不支持语音发音功能，请更换为现代浏览器（如 Chrome / Edge）。");
+        return;
+      }
+      synth.cancel();
+      var utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "ar";
+      utter.rate = 0.9;
+      utter.pitch = 1.0;
+      synth.speak(utter);
+    }
+
+    useCloudTTS().catch(function() {
+      // 云 TTS 失败时回退到浏览器内置语音
+      useWebSpeechFallback();
+    });
+  }
+
   function initNetwork(data) {
     var graph = buildGraph(data);
     var container = document.getElementById("mynetwork");
@@ -182,6 +439,84 @@
     });
     network.fit({ animation: { duration: 500 } });
     document.getElementById("search").addEventListener("input", function() { applySearch(this.value); });
+
+    var pronounceBtn = document.getElementById("pronounce-btn");
+    if (pronounceBtn) {
+      pronounceBtn.addEventListener("click", function() {
+        if (!currentWordArabic) {
+          alert("请先在图中点选一个单词节点。");
+          return;
+        }
+        playWordAudio(currentWordArabic);
+      });
+    }
+
+    var backBtn = document.getElementById("back-full-graph-btn");
+    if (backBtn) {
+      backBtn.addEventListener("click", function() {
+        if (!isSubgraphView && network) return;
+        isSubgraphView = false;
+        currentRootId = "";
+        if (fullGraphData) {
+          network.setData({
+            nodes: new vis.DataSet(fullGraphData.nodes),
+            edges: new vis.DataSet(fullGraphData.edges)
+          });
+          network.fit({ animation: { duration: 400 } });
+        }
+        backBtn.classList.add("hidden");
+        clearDetail();
+      });
+    }
+
+    network.on("click", function(params) {
+      if (!params.nodes || !params.nodes.length) {
+        return;
+      }
+      var nodeId = params.nodes[0];
+      if (typeof nodeId !== "string") return;
+      if (nodeId.indexOf("word|") === 0) {
+        var wid = nodeId.slice(5);
+        var w = wordMap[wid];
+        if (w) showWordDetail(w);
+      } else {
+        if (nodeId.indexOf("root|") === 0) {
+          var rid = nodeId.slice(5);
+          showRootDetail(rid);
+        } else {
+          clearDetail();
+        }
+      }
+    });
+
+    network.on("doubleClick", function(params) {
+      if (!params.nodes || !params.nodes.length) return;
+      var nodeId = params.nodes[0];
+      if (typeof nodeId !== "string" || nodeId.indexOf("root|") !== 0) return;
+      var rid = nodeId.slice(5);
+      var backBtn = document.getElementById("back-full-graph-btn");
+      var derived = wordsByRoot[rid] || [];
+      var nodes = [];
+      var edges = [];
+
+      // 只保留该词根和它的单词
+      var rootNode = allNodes.find(function(n) { return n.id === "root|" + rid; });
+      if (rootNode) nodes.push(rootNode);
+      derived.forEach(function(w) {
+        var wn = allNodes.find(function(n) { return n.id === "word|" + w.id; });
+        if (wn) nodes.push(wn);
+        edges.push({ from: "word|" + w.id, to: "root|" + rid });
+      });
+
+      if (nodes.length) {
+        isSubgraphView = true;
+        fullGraphData = { nodes: allNodes.slice(), edges: allEdges.slice() };
+        network.setData({ nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) });
+        network.fit({ animation: { duration: 400 } });
+        if (backBtn) backBtn.classList.remove("hidden");
+        showRootDetail(rid);
+      }
+    });
   }
 
   function setStatus(msg, isError) {
@@ -191,8 +526,378 @@
     el.className = isError ? "error" : "loading";
   }
 
+  // === 数据导入 / 持久化 ===
+  function saveToStorage(data) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) {
+      console.warn("保存到 localStorage 失败", e);
+    }
+  }
+
+  function loadFromStorage() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) {
+      console.warn("读取 localStorage 失败", e);
+      return null;
+    }
+  }
+
+  function mergeData(base, incoming) {
+    var roots = base.roots ? base.roots.slice() : [];
+    var words = base.words ? base.words.slice() : [];
+
+    var rootIds = Object.create(null);
+    roots.forEach(function(r) { if (r && r.id) rootIds[r.id] = true; });
+    (incoming.roots || []).forEach(function(r) {
+      if (r && r.id && !rootIds[r.id]) {
+        rootIds[r.id] = true;
+        roots.push(r);
+      }
+    });
+
+    var wordIds = Object.create(null);
+    words.forEach(function(w) { if (w && w.id) wordIds[w.id] = true; });
+    (incoming.words || []).forEach(function(w) {
+      if (w && w.id && !wordIds[w.id]) {
+        wordIds[w.id] = true;
+        words.push(w);
+      }
+    });
+
+    return { roots: roots, words: words };
+  }
+
+  function parseInputLines(text) {
+    var lines = (text || "").split(/\r?\n/);
+    var roots = [];
+    var words = [];
+    var errors = [];
+
+    lines.forEach(function(line, idx) {
+      var raw = line.trim();
+      if (!raw) return;
+      var parts = raw.split("|");
+      var kind = parts[0].trim().toLowerCase();
+      if (kind === "root") {
+        if (parts.length < 4) {
+          errors.push("第 " + (idx + 1) + " 行（root）：字段不足，至少需要 root|id|阿文|中文");
+          return;
+        }
+        var r = {
+          id: (parts[1] || "").trim(),
+          arabic: (parts[2] || "").trim(),
+          chinese: (parts[3] || "").trim(),
+          pronunciation: (parts[4] || "").trim(),
+          detail: (parts[5] || "").trim()
+        };
+        if (!r.id || !r.arabic || !r.chinese) {
+          errors.push("第 " + (idx + 1) + " 行（root）：id/阿文/中文 不能为空");
+          return;
+        }
+        roots.push(r);
+      } else if (kind === "word") {
+        if (parts.length < 6) {
+          errors.push("第 " + (idx + 1) + " 行（word）：字段不足，至少需要 word|id|阿文|中文|词性(可空)|词根id");
+          return;
+        }
+        var w = {
+          id: (parts[1] || "").trim(),
+          arabic: (parts[2] || "").trim(),
+          chinese: (parts[3] || "").trim(),
+          pos: (parts[4] || "").trim(),
+          root_id: (parts[5] || "").trim(),
+          detail: (parts[6] || "").trim(),
+          example: (parts[7] || "").trim()
+        };
+        if (!w.id || !w.arabic || !w.chinese || !w.root_id) {
+          errors.push("第 " + (idx + 1) + " 行（word）：id/阿文/中文/词根id 不能为空");
+          return;
+        }
+        words.push(w);
+      } else {
+        errors.push("第 " + (idx + 1) + " 行：必须以 root| 或 word| 开头");
+      }
+    });
+
+    return { roots: roots, words: words, errors: errors };
+  }
+
+  function deleteRoot(rootId) {
+    if (!rootId) return;
+    allRoots = allRoots.filter(function(r) { return r.id !== rootId; });
+    allWords = allWords.filter(function(w) { return w.root_id !== rootId; });
+    var data = { roots: allRoots, words: allWords };
+    initNetwork(data);
+    saveToStorage(data);
+    refreshWordList();
+    refreshManageSelects();
+  }
+
+  function deleteWord(wordId) {
+    if (!wordId) return;
+    allWords = allWords.filter(function(w) { return w.id !== wordId; });
+    var data = { roots: allRoots, words: allWords };
+    initNetwork(data);
+    saveToStorage(data);
+    refreshWordList();
+    refreshManageSelects();
+  }
+
+  function exportCurrentJson() {
+    var data = { roots: allRoots, words: allWords };
+    var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "data.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function clearStorage() {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+      alert("已清除本地个人库。下次刷新将重新从 data.json 读取。");
+    } catch (e) {}
+  }
+
+  // === 视图：单词列表 & 管理下拉 ===
+  function refreshWordList() {
+    var listEl = document.getElementById("word-list");
+    if (!listEl) return;
+    var q = (document.getElementById("word-search").value || "").trim().toLowerCase();
+    listEl.innerHTML = "";
+    var words = allWords.slice();
+
+    if (q) {
+      words = words.filter(function(w) {
+        var hay = [
+          w.id || "",
+          w.arabic || "",
+          w.chinese || "",
+          w.pos || "",
+          w.root_id || ""
+        ].join(" ").toLowerCase();
+        return hay.indexOf(q) !== -1;
+      });
+    }
+
+    words.forEach(function(w) {
+      var item = document.createElement("div");
+      item.className = "word-item";
+
+      var main = document.createElement("div");
+      main.className = "word-main";
+      var ar = document.createElement("div");
+      ar.className = "word-ar";
+      ar.textContent = w.arabic || w.id || "";
+      var zh = document.createElement("div");
+      zh.className = "word-zh";
+      zh.textContent = w.chinese || "";
+      var meta = document.createElement("div");
+      meta.className = "word-meta";
+      var metaPieces = [];
+      if (w.pos) metaPieces.push(w.pos);
+      if (w.root_id) metaPieces.push("词根: " + w.root_id);
+      meta.textContent = metaPieces.join(" · ");
+      main.appendChild(ar);
+      main.appendChild(zh);
+      main.appendChild(meta);
+
+      var actions = document.createElement("div");
+      actions.className = "word-actions";
+      var btnPlay = document.createElement("button");
+      btnPlay.className = "btn-icon";
+      btnPlay.innerHTML = '<span>🔊</span><span>发音</span>';
+      btnPlay.addEventListener("click", function(e) {
+        e.stopPropagation();
+        playWordAudio(w.arabic || "");
+      });
+
+      var btnLocate = document.createElement("button");
+      btnLocate.className = "btn-icon secondary";
+      btnLocate.textContent = "在图谱中定位";
+      btnLocate.addEventListener("click", function(e) {
+        e.stopPropagation();
+        setActiveView("view-graph");
+        var nodeId = "word|" + w.id;
+        if (network && nodeId) {
+          network.selectNodes([nodeId], true);
+          network.focus(nodeId, { animation: { duration: 400 } });
+        }
+      });
+
+      actions.appendChild(btnPlay);
+      actions.appendChild(btnLocate);
+
+      item.appendChild(main);
+      item.appendChild(actions);
+
+      item.addEventListener("click", function() {
+        setActiveView("view-graph");
+        var nodeId = "word|" + w.id;
+        if (network && nodeId) {
+          network.selectNodes([nodeId], true);
+          network.focus(nodeId, { animation: { duration: 400 } });
+        }
+      });
+
+      listEl.appendChild(item);
+    });
+  }
+
+  function refreshManageSelects() {
+    var rootSel = document.getElementById("delete-root-select");
+    var wordSel = document.getElementById("delete-word-select");
+    if (!rootSel || !wordSel) return;
+
+    var q = (document.getElementById("manage-search").value || "").trim().toLowerCase();
+
+    rootSel.innerHTML = '<option value="">选择要删除的词根</option>';
+    allRoots.forEach(function(r) {
+      var hay = [r.id || "", r.arabic || "", r.chinese || ""].join(" ").toLowerCase();
+      if (q && hay.indexOf(q) === -1) return;
+      var opt = document.createElement("option");
+      opt.value = r.id;
+      opt.textContent = (r.arabic || r.id) + " - " + (r.chinese || "");
+      rootSel.appendChild(opt);
+    });
+
+    wordSel.innerHTML = '<option value="">选择要删除的单词</option>';
+    allWords.forEach(function(w) {
+      var hay = [w.id || "", w.arabic || "", w.chinese || "", w.root_id || ""].join(" ").toLowerCase();
+      if (q && hay.indexOf(q) === -1) return;
+      var opt = document.createElement("option");
+      opt.value = w.id;
+      opt.textContent = (w.arabic || w.id) + " - " + (w.chinese || "") + (w.root_id ? " (" + w.root_id + ")" : "");
+      wordSel.appendChild(opt);
+    });
+  }
+
+  // === 视图切换 ===
+  function setActiveView(viewId) {
+    var views = document.querySelectorAll(".view");
+    views.forEach(function(v) {
+      if (v.id === viewId) v.classList.add("active");
+      else v.classList.remove("active");
+    });
+    var tabs = document.querySelectorAll("#tab-bar .tab");
+    tabs.forEach(function(t) {
+      if (t.getAttribute("data-view") === viewId) t.classList.add("active");
+      else t.classList.remove("active");
+    });
+  }
+
+  function bindUI() {
+    var tabs = document.querySelectorAll("#tab-bar .tab");
+    tabs.forEach(function(tab) {
+      tab.addEventListener("click", function() {
+        var v = tab.getAttribute("data-view");
+        if (v) setActiveView(v);
+      });
+    });
+
+    var wordSearch = document.getElementById("word-search");
+    if (wordSearch) {
+      wordSearch.addEventListener("input", refreshWordList);
+    }
+
+    var manageSearch = document.getElementById("manage-search");
+    if (manageSearch) {
+      manageSearch.addEventListener("input", refreshManageSelects);
+    }
+
+    var deleteRootBtn = document.getElementById("delete-root-btn");
+    if (deleteRootBtn) {
+      deleteRootBtn.addEventListener("click", function() {
+        var sel = document.getElementById("delete-root-select");
+        if (!sel || !sel.value) return;
+        if (confirm("确定删除该词根及其所有单词吗？此操作仅影响当前浏览器数据。")) {
+          deleteRoot(sel.value);
+        }
+      });
+    }
+
+    var deleteWordBtn = document.getElementById("delete-word-btn");
+    if (deleteWordBtn) {
+      deleteWordBtn.addEventListener("click", function() {
+        var sel = document.getElementById("delete-word-select");
+        if (!sel || !sel.value) return;
+        if (confirm("确定删除该单词吗？此操作仅影响当前浏览器数据。")) {
+          deleteWord(sel.value);
+        }
+      });
+    }
+
+    var exportBtn = document.getElementById("export-json-btn");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", exportCurrentJson);
+    }
+
+    var clearBtn = document.getElementById("clear-storage-btn");
+    if (clearBtn) {
+      clearBtn.addEventListener("click", clearStorage);
+    }
+
+    var parseBtn = document.getElementById("parse-import-btn");
+    var mergeBtn = document.getElementById("merge-import-btn");
+    if (parseBtn) {
+      parseBtn.addEventListener("click", function() {
+        var textarea = document.getElementById("import-text");
+        var preview = document.getElementById("import-preview");
+        if (!textarea || !preview) return;
+        var parsed = parseInputLines(textarea.value);
+        var msg = [];
+        msg.push("解析结果：");
+        msg.push(" - 词根: " + parsed.roots.length + " 条");
+        msg.push(" - 单词: " + parsed.words.length + " 条");
+        if (parsed.errors.length) {
+          msg.push("");
+          msg.push("错误：");
+          parsed.errors.forEach(function(e) { msg.push(" - " + e); });
+        }
+        preview.textContent = msg.join("\n");
+        if (mergeBtn) {
+          mergeBtn.disabled = parsed.roots.length === 0 && parsed.words.length === 0;
+          mergeBtn._parsed = parsed;
+        }
+      });
+    }
+
+    if (mergeBtn) {
+      mergeBtn.addEventListener("click", function() {
+        if (!mergeBtn._parsed) return;
+        var base = { roots: allRoots, words: allWords };
+        var merged = mergeData(base, mergeBtn._parsed);
+        allRoots = merged.roots;
+        allWords = merged.words;
+        initNetwork(merged);
+        saveToStorage(merged);
+        refreshWordList();
+        refreshManageSelects();
+        alert("已合并到当前图谱，并保存到本地个人库。");
+      });
+    }
+  }
+
   function loadData() {
     setStatus("正在加载数据…", false);
+    var stored = loadFromStorage();
+    if (stored && (stored.roots || stored.words)) {
+      setStatus("已从本地个人库加载数据。", false);
+      document.getElementById("status").classList.remove("hidden");
+      initNetwork(stored);
+      refreshWordList();
+      refreshManageSelects();
+      return;
+    }
+
     fetch("data.json")
       .then(function(r) {
         if (!r.ok) throw new Error("未找到 data.json");
@@ -201,17 +906,25 @@
       .then(function(data) {
         if (!data.roots && !data.words) throw new Error("数据为空");
         setStatus("已加载 " + (data.roots ? data.roots.length : 0) + " 个词根、" + (data.words ? data.words.length : 0) + " 个单词。", false);
-        document.getElementById("status").classList.add("hidden");
         initNetwork(data);
+        refreshWordList();
+        refreshManageSelects();
       })
       .catch(function() {
         setStatus("使用示例数据展示。若需展示自己的图谱，请将 my_knowledge_base.json 复制为本目录下的 data.json 后刷新。", false);
         initNetwork(DEFAULT_DATA);
+        refreshWordList();
+        refreshManageSelects();
       });
   }
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", loadData);
-  else loadData();
+  function init() {
+    bindUI();
+    loadData();
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();
   </script>
 </body>
